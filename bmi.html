@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BMI计算器</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        .result { font-size: 24px; margin: 20px; padding: 15px; border-radius: 8px; }
+        .underweight { background: #87CEEB; }  /* 偏瘦-蓝色 */
+        .normal { background: #90EE90; }      /* 正常-绿色 */
+        .overweight { background: #FFA07A; }  /* 超重-橙色 */
+    </style>
+</head>
+<body>
+    <h1>BMI计算结果</h1>
+    <div id="result"></div>
+
+    <script>
+        // 从URL参数中获取身高体重
+        const urlParams = new URLSearchParams(window.location.search);
+        const height = parseFloat(urlParams.get('height')) / 100; // 转换为米
+        const weight = parseFloat(urlParams.get('weight'));
+
+        // 计算BMI并分类
+        let bmi, status, colorClass;
+        if (height && weight) {
+            bmi = weight / (height * height);
+            if (bmi < 18.5) {
+                status = "偏瘦";
+                colorClass = "underweight";
+            } else if (bmi < 24.9) {
+                status = "正常";
+                colorClass = "normal";
+            } else {
+                status = "超重";
+                colorClass = "overweight";
+            }
+            document.getElementById("result").innerHTML = `
+                <div class="result ${colorClass}">
+                    BMI值：${bmi.toFixed(1)}<br>
+                    健康状态：${status}
+                </div>
+            `;
+        } else {
+            document.getElementById("result").innerHTML = "参数错误，请返回重新输入！";
+        }
+    </script>
+</body>
+</html>
